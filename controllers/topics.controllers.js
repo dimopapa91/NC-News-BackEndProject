@@ -8,8 +8,10 @@ exports.getTopics = (req, res) => {
         res.status(200).send({ topics })
     });
 };
-    exports.getApi = (req, res) => {
-    fetchApi().then((api) => {
-        res.status(200).send({ api })
+    exports.getApi = (req, res, next) => {
+    fetchApi().then((result) => {
+        res.status(200).send({ result })
+    }).catch((err) => {
+        next(err);
     });
 };

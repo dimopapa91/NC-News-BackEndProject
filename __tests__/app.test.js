@@ -16,21 +16,33 @@ describe('/api/topics', () => {
         return request(app)
           .get('/api/topics')
           .expect(200)
-          .then((response) => {
-            expect(response.body.topics.length).toBe(3);
-            expect(response.body.topics[0]).toHaveProperty('slug');
-            expect(response.body.topics[0]).toHaveProperty('description');
+          .then((res) => {
+            expect(res.body.topics.length).toBe(3);
+            expect(res.body.topics[0]).toHaveProperty('slug');
+            expect(res.body.topics[0]).toHaveProperty('description');
           });
     });
     test("GET - status: 404 - responds with error", () => {
         return request(app)
           .get("/api/nonsense")
           .expect(404)
-          .then((response) => {
-            expect(response.status).toBe(404);
-            expect(response.body.msg).toBe("page not found");
+          .then((res) => {
+            expect(res.status).toBe(404);
+            expect(res.body.msg).toBe("page not found");
           });
       });
 });
-
+describe('/api', () => {
+    test('GET - status: 200 - returns status with JSON object', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then((res) => {
+            expect(typeof res.body.result).toBe('object');
+            expect(res.body.result).toHaveProperty('GET /api');
+            expect(res.body.result).toHaveProperty('GET /api/topics');
+            expect(res.body.result).toHaveProperty('GET /api/articles');
+        });
+    });
+});
 
