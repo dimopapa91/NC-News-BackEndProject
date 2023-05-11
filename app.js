@@ -1,13 +1,19 @@
 const express = require('express');
 const jest_sorted = require('jest-sorted');
 
-const { getTopics, getApi, getArticlesId } = require('./controllers/topics.controllers');
+const { 
+    getTopics, 
+    getApi, 
+    getArticlesId, 
+    getArticles 
+} = require('./controllers/topics.controllers');
 
 const app = express();
 
 //GET
 app.get('/api', getApi);
 app.get('/api/topics', getTopics);
+app.get('/api/articles', getArticles);
 app.get('/api/articles/:article_id', getArticlesId);
 
 //Error Handling
