@@ -1,5 +1,6 @@
 const express = require('express');
 const jest_sorted = require('jest-sorted');
+
 const { getTopics, getApi, getArticlesId } = require('./controllers/topics.controllers');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use((err, req, res, next) => {
         res.status(400).send({ msg: 'bad request!' });
     }
 })
+
 app.use((err, req, res, next) => {
     res.status(500).send('Something is not working!');
 });

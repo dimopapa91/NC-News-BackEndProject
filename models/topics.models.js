@@ -13,6 +13,7 @@ exports.fetchApi = () => {
         return JSON.parse(data);
     });
 };
+
   exports.fetchArticlesId = (id) => {
     return connection
       .query('SELECT * FROM articles WHERE article_id = $1', [id])
@@ -23,3 +24,4 @@ exports.fetchApi = () => {
         return result.rows[0];
       });
   };
+

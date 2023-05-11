@@ -1,3 +1,4 @@
+
 const { 
     fetchTopics,
     fetchApi, 
@@ -6,6 +7,7 @@ const {
 
 
     exports.getTopics = (req, res) => {
+
     // console.log('Inside Controller')
     const sortBy = req.query.sort_by;
     fetchTopics(sortBy).then((topics) => {
@@ -18,6 +20,7 @@ const {
     }).catch((err) => {
         next(err);
     });
+
 };
     exports.getArticlesId = (req, res, next) => {
         const id = req.params.article_id;
@@ -37,4 +40,5 @@ const {
       next(err);
     });
 };
+
 
