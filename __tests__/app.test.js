@@ -103,5 +103,25 @@ describe('/api/articles', () => {
         });
     });
 });
-
+describe('/api/articles/:article_id/comments', () => {
+    test('GET - status 200 - should return a comment including a valid id', () => {
+        return request(app)
+        .get('/api/articles/9/comments')
+        .expect(200)
+        .then((res) => {
+            res.body.comments.forEach((comment) => {
+                expect(comment).toEqual(
+                    expect.objectContaining({
+                        comment_id: expect.any(Number),
+                        article_id: expect.any(Number),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        body: expect.any(String),
+                        created_at: expect.any(String)
+                    })
+                )
+            })
+        })
+    })
+})
 
