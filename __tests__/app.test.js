@@ -46,3 +46,40 @@ describe('/api', () => {
     });
 });
 
+describe('/api/articles/:article_id', () => {
+    test('GET - status: 200 - get articles by id', () => {
+        return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then((res) => {
+            expect(res.body.article).toEqual({
+                article_id: 1,
+                title: 'Living in the shadow of a great man',
+                topic: 'mitch',
+                author: 'butter_bridge',
+                body: 'I find this existence challenging',
+                created_at: '2020-07-09T20:11:00.000Z',
+                votes: 100,
+                article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+              });
+        });
+    });
+    test('GET - status: 404 - Should return an error when article not found', () => {
+        return request(app)
+          .get('/api/articles/900')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'Article not found' });
+          });
+      });
+      test('GET - status: 400 - Should return an error when article not found', () => {
+        return request(app)
+          .get('/api/articles/nonsense')
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'bad request!' });
+          });
+      });  
+});
+
+
