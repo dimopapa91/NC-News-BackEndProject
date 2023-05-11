@@ -120,8 +120,24 @@ describe('/api/articles/:article_id/comments', () => {
                         created_at: expect.any(String)
                     })
                 )
-            })
-        })
-    })
-})
+            });
+        });
+    });
+    test('GET - 400 - should return an error message when invalid path given', () => {
+        return request(app)
+        .get('/api/articles/nonsense/comments')
+        .expect(400)
+        .then((res) => {
+            expect(res.body.msg).toBe('bad request!');
+        });
+    });
+    test('GET - 404 - should return error message when id is not found', () => {
+        return request(app)
+        .get('/api/articles/9999/comments')
+        .expect(404)
+        .then((res) => {
+            expect(res.body.msg).toBe('Input a valid id');
+        });
+    });
+});
 
