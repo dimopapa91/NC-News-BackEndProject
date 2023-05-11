@@ -38,8 +38,8 @@ exports.fetchApi = () => {
 
     COUNT(*)::INT AS comment_count
     FROM articles
-    
-    JOIN comments ON comments.article_id = articles.article_id
+
+    LEFT JOIN comments ON comments.article_id = articles.article_id
     GROUP BY articles.article_id
     ORDER BY articles.created_at DESC;
     `)

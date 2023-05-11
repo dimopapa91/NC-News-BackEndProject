@@ -87,6 +87,7 @@ describe('/api/articles', () => {
         .get('/api/articles')
         .expect(200)
         .then((res) => {
+                expect(res.body.articles.length).toBe(12)
             res.body.articles.forEach((article) => {
                 expect(typeof article).toBe('object');
                 expect(article).toHaveProperty('article_id');
