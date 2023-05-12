@@ -140,4 +140,41 @@ describe('/api/articles/:article_id/comments', () => {
         });
     });
 });
-
+describe("/api/articles/:article_id/comments", () => {
+    test("POST - status: 201 - responds with success & comment object", () => {
+      const newComment = {
+        username: "butter_bridge",
+        body: "body"
+      };
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send(newComment)
+        .expect(201)
+        .then((res) => {
+          expect(res.body.comment.author).toBe("butter_bridge");
+          expect(res.body.comment.body).toBe("body");
+        });
+    });
+    test("POST - status: 400 - responds with error msg having an invalid id ", () => {
+        const body = {
+            author: "butter_bridge",
+            body: "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!"
+        }
+        return request(app)
+          .post("/api/articles/nothing/comments")
+          .send(body)
+          .expect(400)
+          .then((res) => {
+            expect(res.status).toBe(400);
+            expect(res.body.msg).toBe("bad request!");
+          });
+      });
+    test("POST - status: 404 - responds with error for non-existent id", () => {
+        return request(app)
+        .post("/api/articles/999")
+        .expect(404)
+        .then((res) => {
+            expect(res.body.msg).toBe("page not found");
+        });
+    });
+});

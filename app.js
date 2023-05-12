@@ -6,10 +6,12 @@ const {
     getApi, 
     getArticlesId, 
     getArticles,
-    getComments 
+    getComments,
+    insertArtComments 
 } = require('./controllers/topics.controllers');
 
 const app = express();
+app.use(express.json());
 
 //GET
 app.get('/api', getApi);
@@ -17,6 +19,9 @@ app.get('/api/topics', getTopics);
 app.get('/api/articles', getArticles);
 app.get('/api/articles/:article_id', getArticlesId);
 app.get('/api/articles/:article_id/comments', getComments);
+
+//POST
+app.post('/api/articles/:article_id/comments', insertArtComments);
 
 //Error Handling
 app.all('*', (req, res) => {

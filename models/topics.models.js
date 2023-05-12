@@ -62,3 +62,19 @@ exports.fetchComments = (id) => {
         return result.rows;
     })
 }
+
+exports.insertComments = (newComment, article_id) => {
+    const { username, body } = newComment;
+    return connection
+    .query(`
+    INSERT INTO comments
+    (article_id, author, body)
+    VALUES ($1, $2, $3)
+    RETURNING *;`,
+    [article_id, username, body]
+    )
+    .then((result) => {
+        return result.rows[0];
+    })
+}
+
