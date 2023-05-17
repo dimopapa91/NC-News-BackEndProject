@@ -1,12 +1,12 @@
 const connection = require('../db/connection');
 const fs = require('fs/promises');
 
-exports.fetchTopics = () => {   
+    exports.fetchTopics = () => {   
     return connection.query('SELECT * FROM topics;').then((result) => {
         return result.rows;
     });
 };
-exports.fetchApi = () => {
+    exports.fetchApi = () => {
     return fs.readFile('./endpoints.json', 'utf-8', (err, data) => {
         return data;
     }).then((data) => {
@@ -14,7 +14,7 @@ exports.fetchApi = () => {
     });
 };
 
-  exports.fetchArticlesId = (id) => {
+    exports.fetchArticlesId = (id) => {
     return connection
       .query('SELECT * FROM articles WHERE article_id = $1', [id])
       .then((result) => {
@@ -25,7 +25,7 @@ exports.fetchApi = () => {
       });
   };
 
-  exports.fetchArticles = () => {
+    exports.fetchArticles = () => {
     return connection.query(`
     SELECT
     articles.author,
@@ -48,7 +48,7 @@ exports.fetchApi = () => {
     });
   };
 
-exports.fetchComments = (id) => {
+    exports.fetchComments = (id) => {
     return connection.query(`
     SELECT *
     FROM comments
@@ -63,7 +63,7 @@ exports.fetchComments = (id) => {
     })
 }
 
-exports.insertComments = (newComment, article_id) => {
+    exports.insertComments = (newComment, article_id) => {
     const { username, body } = newComment;
     return connection
     .query(`
@@ -78,3 +78,22 @@ exports.insertComments = (newComment, article_id) => {
     })
 }
 
+exports.fetchUpdateArticle = (id, votesIncrement) => {
+    let selectQuery = `
+        UPDATE articles
+        SET votes = votes + $1
+        WHERE article_id = $2
+        RETURNING *;
+        `;
+        console.log(typeof votesIncrement);
+    if (typeof votesIncrement !== "number") {
+      return Promise.reject({ status: 400, msg: "Incorrect data type" });
+    }
+    return connection.query(selectQuery, [votesIncrement, id]).then((res) => {
+        console.log(res.rows);
+        if (res.rows.length === 0) {
+            return Promise.reject({ status: 404, msg: "Article not existant" });
+        }
+      return res.rows[0];
+    });
+};

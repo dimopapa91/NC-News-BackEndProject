@@ -7,7 +7,8 @@ const {
     getArticlesId, 
     getArticles,
     getComments,
-    insertArtComments 
+    insertArtComments,
+    patchArticlesId 
 } = require('./controllers/topics.controllers');
 
 const app = express();
@@ -22,6 +23,10 @@ app.get('/api/articles/:article_id/comments', getComments);
 
 //POST
 app.post('/api/articles/:article_id/comments', insertArtComments);
+
+//PATCH
+app.patch('/api/articles/:article_id', patchArticlesId);
+
 
 //Error Handling
 app.all('*', (req, res) => {
