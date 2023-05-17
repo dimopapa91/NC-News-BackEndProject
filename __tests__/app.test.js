@@ -178,3 +178,50 @@ describe("/api/articles/:article_id/comments", () => {
         });
     });
 });
+describe('/api/articles/:article_id', () => {
+    test("PATCH - status: 200 - returns status code 200 and updated object", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .then((response) => {
+          expect(response.body.fetchUpdateArticle.votes).toBe(101);
+        });
+    });
+    test("PATCH - status: 200 - it works with larger integers", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: 300 })
+        .expect(200)
+        .then((response) => {
+          expect(response.body.fetchUpdateArticle.votes).toBe(400);
+        });
+    });
+    test("PATCH - status: 404 - with error message", () => {
+      return request(app)
+        .patch("/api/articles/123456789")
+        .send({ inc_votes: 1 })
+        .expect(404)
+        .then((response) => {
+          expect(response.body.msg).toBe("Article not existant");
+        });
+    });
+    test("PATCH - status: 400 - error message if the article_id is not a number", () => {
+      return request(app)
+        .patch("/api/articles/nonsense")
+        .send({ inc_votes: 1 })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).toBe("bad request!");
+        });
+    });
+    test("PATCH - status: 400 - error message if inc_votes is not a number", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: "Incorrect data type" })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.msg).toBe("Incorrect data type");
+        });
+    });
+  });

@@ -5,7 +5,8 @@ const {
     fetchArticlesId,
     fetchArticles,
     fetchComments,
-    insertComments 
+    insertComments,
+    fetchUpdateArticle 
 } = require('../models/topics.models');
 
 
@@ -68,8 +69,20 @@ const {
     res.status(201).send({ comment })
 })
     .catch((err) => {
-        console.log(err)
         next(err);
     });
 };
+    exports.patchArticlesId = (req, res, next) => {
+    const id = req.params.article_id;
+    const votesIncr = req.body.inc_votes;
+    console.log(id, votesIncr);
+    fetchUpdateArticle(id, votesIncr)
+        .then((result) => {
+        res.status(200).send({ fetchUpdateArticle: result });
+        })
+        .catch((err) => {
+        console.log(err)
+        next(err);
+        });
+    };
 
