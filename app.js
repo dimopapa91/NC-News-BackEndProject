@@ -1,5 +1,6 @@
 const express = require('express');
 const jest_sorted = require('jest-sorted');
+const cors = require('cors');
 
 const { 
     getTopics, 
@@ -12,6 +13,9 @@ const {
 } = require('./controllers/topics.controllers');
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
 //GET
